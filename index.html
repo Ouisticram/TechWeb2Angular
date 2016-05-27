@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+  <meta charset="UTF-8">
+</head>
+<body ng-app="myApp">
+  <!-- index.html -->
+
+  <div ui-view>
+    NOTHING IS IMPOSSIBLE !
+  </div>
+  <!-- We'll also add some navigation: -->
+  <!--<button ui-sref=".birth">birth</button>
+  <button ui-sref=".birth.chilhood">chilhood</button>
+  <button ui-sref=".birth.chilhood.study">study</button>
+  <button ui-sref=".birth.chilhood.carrer">carrer</button>
+  <button ui-sref=".birth.chilhood.study.phD">phD</button>
+  <button ui-sref=".birth.chilhood.carrer.workingLife">workingLife</button>
+  <button ui-sref=".birth.chilhood.carrer.workingLife.pension">pension</button>
+  <button ui-sref=".birth.chilhood.carrer.workingLife.pension.death">death</button> -->
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.0/angular-ui-router.js"></script>
+
+  <script type="text/javascript">
+    angular.module('myApp', ['ui.router']);
+
+    angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
+      //
+      // For any unmatched url, redirect to /state1
+      $urlRouterProvider.otherwise("/birth");
+      //
+      // Now set up the states
+      $stateProvider
+        .state('birth', {
+          url: "/birth",
+          template: "<div>naissance <div ui-view><button ui-sref=\".chilhood\">chilhood</button></div></div>",
+          resolve: {
+            emails: function() {
+              return [{
+                title: 'Hello'
+              }, {
+                title: 'Tu viens plus aux soirées'
+              }, {
+                title: 'Hello world'
+              }];
+            }
+          },
+          controller: function(emails) {
+            console.log(emails);
+          }
+        })
+        .state('birth.chilhood', {
+          url: "/chilhood",
+          template: "<div>enfance <div ui-view><button ui-sref=\".study\">study</button><button ui-sref=\".carrer\">carrer</button></div></div>"
+        })
+        .state('birth.chilhood.study', {
+          url: "/study",
+          template: "<div>étude <div ui-view><button ui-sref=\".phD\">phD</button><button ui-sref=\".workingLife\">workingLife</button></div></div>"
+        })
+        .state('birth.chilhood.carrer', {
+          url: "/carrer",
+          template: "<div>carrière <div ui-view><button ui-sref=\".workingLife\">workingLife</button></div></div>"
+        })
+        .state('birth.chilhood.study.workingLife', {
+          url: "/workingLife",
+          template: "<div>vie active <div ui-view><button ui-sref=\".pension\">pension</button></div></div>"
+        })
+        .state('birth.chilhood.study.phD', {
+          url: "/phD",
+          template: "<div>Doctorat <div ui-view><button ui-sref=\".workingLife\">workingLife</button></div></div>"
+        })
+        .state('birth.chilhood.study.phD.workingLife', {
+          url: "/workingLife",
+          template: "<div>vie active <div ui-view><button ui-sref=\".pension\">pension</button></div></div>"
+        })
+        .state('birth.chilhood.carrer.workingLife', {
+          url: "/workingLife",
+          template: "<div>vie active <div ui-view><button ui-sref=\".pension\">pension</button></div></div>"
+        })
+        .state('birth.chilhood.study.workingLife.pension', {
+          url: "/pension",
+          template: "<div>maison de retraite <div ui-view><button ui-sref=\".death\">death</button></div></div>"
+        })
+        .state('birth.chilhood.carrer.workingLife.pension', {
+          url: "/pension",
+          template: "<div>maison de retraite <div ui-view><button ui-sref=\".death\">death</button></div></div>"
+        })
+        .state('birth.chilhood.study.phD.workingLife.pension', {
+          url: "/pension",
+          template: "<div>maison de retraite <div ui-view><button ui-sref=\".death\">death</button></div></div>"
+        })
+        .state('birth.chilhood.study.workingLife.pension.death', {
+          url: "/death",
+          template: "<div>mort <div ui-view><button ui-sref=\"birth\">Reborn?</button></div></div>"
+        })
+        .state('birth.chilhood.carrer.workingLife.pension.death', {
+          url: "/death",
+          template: "<div>mort <div ui-view><button ui-sref=\"birth\">Reborn?</button></div></div>"
+        })
+        .state('birth.chilhood.study.phD.workingLife.pension.death', {
+          url: "/death",
+          template: "<div>mort <div ui-view><button ui-sref=\"birth\">Reborn?</button></div></div>"
+        });
+    });
+
+    function addWorkingLife($stateProvider, parent){
+      //$stateProvider
+    }
+  </script>
+  </body>
+
+</html>
+
