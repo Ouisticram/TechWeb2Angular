@@ -20,21 +20,47 @@
   <button ui-sref=".birth.chilhood.carrer.workingLife.pension">pension</button>
   <button ui-sref=".birth.chilhood.carrer.workingLife.pension.death">death</button> -->
 
+
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.0/angular-ui-router.js"></script>
-  <script type="text/javascript" scr="https://raw.githubusercontent.com/lodash/lodash/4.13.1/dist/lodash.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.2/restangular.min.js"></script>
-  <script type="text/javascript" src="http://requirejs.org/docs/release/2.2.0/minified/require.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.13.1/lodash.min.js"></script>
+  </script><script src="http://cdn.jsdelivr.net/restangular/1.1.3/restangular.min.js"></script>
+
+  <!--<script type="text/javascript" scr="https://cdn.jsdelivr.net/lodash/4.13.1/lodash.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.0/angular-ui-router.min.js"></script>  
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.11/angular-route.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.2/restangular.js"></script>-->
 
   <script type="text/javascript">
-    var _ = require(['lodash'], function (lodash) {
-        //lodash is now loaded.
+
+    app = angular.module('myApp', ['ui.router', 'restangular']);
+
+    // Global configuration
+    app.config(function(RestangularProvider) {
+      RestangularProvider.setBaseUrl('http://foaas.com');
+      RestangularProvider.setRequestSuffix('.json');
     });
-    angular.module('myApp', ['ui.router', 'restangular']);
 
-    angular.module('myApp').config(function($stateProvider, $urlRouterProvider, $restangularProvider) {
+    // Declare factory
+    app.factory('Cool', function(Restangular) {
+      return Restangular.service('cool');
+    });
 
-      //console.log($restangularProvider.oneUrl('foaas', 'http://foaas.com/cool/quentin').get());
+    app.controller('MainCtrl', function(Restangular, Cool) {
+      Restangular.all('').getList().then(function (results) {
+          console.log(results);
+      });
+      //FirstRestangular.all('').getList()
+    });
+
+    //console.log(Cool.get("quentin"));
+
+    angular.module('myApp').config(function($stateProvider, $urlRouterProvider, RestangularProvider) {
+
+      //console.log(RestangularProvider.oneUrl('foaas', 'http://foaas.com/cool/quentin').get());
+      //console.log(Cool.get("quentin"));
+      //Cool.get("quentin")
 
       //
       // For any unmatched url, redirect to /state1
