@@ -22,11 +22,20 @@
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.0/angular-ui-router.js"></script>
+  <script type="text/javascript" scr="https://raw.githubusercontent.com/lodash/lodash/4.13.1/dist/lodash.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.2/restangular.min.js"></script>
+  <script type="text/javascript" src="http://requirejs.org/docs/release/2.2.0/minified/require.js"></script>
 
   <script type="text/javascript">
-    angular.module('myApp', ['ui.router']);
+    var _ = require(['lodash'], function (lodash) {
+        //lodash is now loaded.
+    });
+    angular.module('myApp', ['ui.router', 'restangular']);
 
-    angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
+    angular.module('myApp').config(function($stateProvider, $urlRouterProvider, $restangularProvider) {
+
+      //console.log($restangularProvider.oneUrl('foaas', 'http://foaas.com/cool/quentin').get());
+
       //
       // For any unmatched url, redirect to /state1
       $urlRouterProvider.otherwise("/birth");
@@ -36,20 +45,6 @@
         .state('birth', {
           url: "/birth",
           template: "<div>naissance <div ui-view><button ui-sref=\".chilhood\">chilhood</button></div></div>",
-          resolve: {
-            emails: function() {
-              return [{
-                title: 'Hello'
-              }, {
-                title: 'Tu viens plus aux soirées'
-              }, {
-                title: 'Hello world'
-              }];
-            }
-          },
-          controller: function(emails) {
-            console.log(emails);
-          }
         })
         .state('birth.chilhood', {
           url: "/chilhood",
