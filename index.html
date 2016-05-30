@@ -10,6 +10,11 @@
   <div ui-view>
     NOTHING IS IMPOSSIBLE !
   </div>
+
+  <div ng-controller="MainCtrl">
+    <h1>{{message}}</h1>
+    <p>{{subtitle}}</p>
+  </div>
   <!-- We'll also add some navigation: -->
   <!--<button ui-sref=".birth">birth</button>
   <button ui-sref=".birth.chilhood">chilhood</button>
@@ -34,24 +39,32 @@
 
   <script type="text/javascript">
 
+    _.contains = _.includes;
+
+    /*var message = "test";
+    var subtitle = "testeur";*/
+
     app = angular.module('myApp', ['ui.router', 'restangular']);
 
-    // Global configuration
-    app.config(function(RestangularProvider) {
-      RestangularProvider.setBaseUrl('http://foaas.com');
-      RestangularProvider.setRequestSuffix('.json');
+    app.config(function($stateProvider, $urlRouterProvider,RestangularProvider) {
+       RestangularProvider.setBaseUrl('https://mashape-community-foaas.p.mashape.com/donut/Mattieu/Quentin');
+       RestangularProvider.setDefaultHeaders({'X-Mashape-Key': "Noc39bJtc8mshNlpSR3JbS4at93cp1zMPatjsnBz7NomyyEqqM"},{'Accept': "application/json"});
     });
 
     // Declare factory
-    app.factory('Cool', function(Restangular) {
-      return Restangular.service('cool');
+    app.factory('FactoryRestangular', function(Restangular) {
+      return Restangular.withConfig(function(RestangularConfigurer) {
+      });
     });
 
-    app.controller('MainCtrl', function(Restangular, Cool) {
+    app.controller('MainCtrl', function($scope, Restangular, FactoryRestangular) {
       Restangular.all('').getList().then(function (results) {
-          console.log(results);
+          /*console.log(results);
+          console.log(results.message);*/
+          $scope.message = results.message;
+          //console.log(results.subtitle);
+          $scope.subtitle = results.subtitle;
       });
-      //FirstRestangular.all('').getList()
     });
 
     //console.log(Cool.get("quentin"));
